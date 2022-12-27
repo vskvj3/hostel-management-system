@@ -35,20 +35,31 @@ public class Home extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hostel Manager");
+        setMaximumSize(new java.awt.Dimension(1200, 700));
+        setMinimumSize(new java.awt.Dimension(1200, 600));
         setName("homeFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(900, 500));
+        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         BackgroundPanel.setBackground(new java.awt.Color(0, 204, 204));
+        BackgroundPanel.setMaximumSize(new java.awt.Dimension(1200, 500));
+        BackgroundPanel.setMinimumSize(new java.awt.Dimension(1200, 500));
+        BackgroundPanel.setPreferredSize(new java.awt.Dimension(1200, 500));
 
+        addInmateDetailsBtn.setBackground(new java.awt.Color(0, 102, 102));
         addInmateDetailsBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        addInmateDetailsBtn.setForeground(new java.awt.Color(255, 255, 255));
         addInmateDetailsBtn.setText("Add Inmate Details");
+        addInmateDetailsBtn.setBorder(null);
         addInmateDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addInmateDetailsBtnActionPerformed(evt);
             }
         });
 
+        updateAttendeceBtn.setBackground(new java.awt.Color(0, 102, 102));
         updateAttendeceBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        updateAttendeceBtn.setForeground(new java.awt.Color(255, 255, 255));
         updateAttendeceBtn.setText("Update Attendence");
         updateAttendeceBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,23 +67,29 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        addMonthExpenditureBtn.setBackground(new java.awt.Color(0, 102, 102));
         addMonthExpenditureBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
-        addMonthExpenditureBtn.setText("Add Month Expanditure");
+        addMonthExpenditureBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addMonthExpenditureBtn.setText("Add Expanse");
         addMonthExpenditureBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addMonthExpenditureBtnActionPerformed(evt);
             }
         });
 
+        addEstablishmentFeeBtn.setBackground(new java.awt.Color(0, 102, 102));
         addEstablishmentFeeBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
-        addEstablishmentFeeBtn.setText("Add Establishment Fee");
+        addEstablishmentFeeBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addEstablishmentFeeBtn.setText("Calculate est. Fee");
         addEstablishmentFeeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addEstablishmentFeeBtnActionPerformed(evt);
             }
         });
 
+        calculateMessBillbtn.setBackground(new java.awt.Color(0, 102, 102));
         calculateMessBillbtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        calculateMessBillbtn.setForeground(new java.awt.Color(255, 255, 255));
         calculateMessBillbtn.setText("Calculate Mess Bill");
         calculateMessBillbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,6 +98,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Hostel Management System");
 
         javax.swing.GroupLayout BackgroundPanelLayout = new javax.swing.GroupLayout(BackgroundPanel);
@@ -88,25 +106,26 @@ public class Home extends javax.swing.JFrame {
         BackgroundPanelLayout.setHorizontalGroup(
             BackgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackgroundPanelLayout.createSequentialGroup()
-                .addGap(487, 487, 487)
-                .addGroup(BackgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(addMonthExpenditureBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addInmateDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(updateAttendeceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addEstablishmentFeeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(calculateMessBillbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(BackgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BackgroundPanelLayout.createSequentialGroup()
+                        .addGap(487, 487, 487)
+                        .addGroup(BackgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(addMonthExpenditureBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addInmateDetailsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(updateAttendeceBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addEstablishmentFeeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(calculateMessBillbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(BackgroundPanelLayout.createSequentialGroup()
+                        .addGap(445, 445, 445)
+                        .addComponent(jLabel1)))
                 .addContainerGap(435, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackgroundPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(385, 385, 385))
         );
         BackgroundPanelLayout.setVerticalGroup(
             BackgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackgroundPanelLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(64, 64, 64)
                 .addComponent(jLabel1)
-                .addGap(75, 75, 75)
+                .addGap(67, 67, 67)
                 .addComponent(addInmateDetailsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(updateAttendeceBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,7 +146,7 @@ public class Home extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BackgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(BackgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
