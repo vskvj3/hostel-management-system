@@ -4,17 +4,51 @@
  */
 package com.dbmslab.hostelmanager;
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author cy34
  */
 public class updateAttendence extends javax.swing.JFrame {
 
+    
+        // create variables for database connection
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pst = null;  
+    ResultSet rs = null;
+    
     /**
      * Creates new form updateAttendence
      */
     public updateAttendence() {
         initComponents();
+        
+                // initialize mysql connection
+        try {
+            final String URL = "jdbc:mysql://localhost:3306/hostelDB";
+            final String username = "hosteluser";
+            final String password = "";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+                        con = DriverManager.getConnection(URL, username, password);
+        } catch (ClassNotFoundException | SQLException ex) {
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        getCombo();
+        update_table("January");
     }
 
     /**
@@ -33,16 +67,18 @@ public class updateAttendence extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        monthCombo = new javax.swing.JComboBox<>();
+        txtFine = new javax.swing.JTextField();
+        increaseCountBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
+        txtCount = new javax.swing.JTextField();
+        insertBtn = new javax.swing.JButton();
+        admnCombo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         homeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        attendenceTable = new javax.swing.JTable();
+        messageText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1400, 900));
@@ -64,32 +100,51 @@ public class updateAttendence extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("count:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        monthCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        monthCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                monthComboActionPerformed(evt);
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtFine.setText("0 ");
+        txtFine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtFineActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Increase");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        increaseCountBtn.setBackground(new java.awt.Color(0, 51, 51));
+        increaseCountBtn.setForeground(new java.awt.Color(255, 255, 255));
+        increaseCountBtn.setText("Increase");
+        increaseCountBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                increaseCountBtnActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Decrease");
-
-        jButton3.setText("Update");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        updateBtn.setBackground(new java.awt.Color(0, 51, 51));
+        updateBtn.setForeground(new java.awt.Color(255, 255, 255));
+        updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        txtCount.setText("0");
+        txtCount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCountActionPerformed(evt);
+            }
+        });
+
+        insertBtn.setBackground(new java.awt.Color(0, 51, 51));
+        insertBtn.setForeground(new java.awt.Color(255, 255, 255));
+        insertBtn.setText("Insert");
+        insertBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertBtnActionPerformed(evt);
             }
         });
 
@@ -98,51 +153,56 @@ public class updateAttendence extends javax.swing.JFrame {
         formPanelLayout.setHorizontalGroup(
             formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(formPanelLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(54, 54, 54)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(formPanelLayout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5))
-                    .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel6)))
-                .addGap(29, 29, 29)
-                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addGroup(formPanelLayout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(updateBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(insertBtn))
+                    .addGroup(formPanelLayout.createSequentialGroup()
+                        .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel6)))
+                        .addGap(29, 29, 29)
+                        .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(admnCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(monthCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtFine)
+                            .addGroup(formPanelLayout.createSequentialGroup()
+                                .addComponent(txtCount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(increaseCountBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         formPanelLayout.setVerticalGroup(
             formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(formPanelLayout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(formPanelLayout.createSequentialGroup()
-                        .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(45, 45, 45)
+                .addGap(81, 81, 81)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(monthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(admnCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formPanelLayout.createSequentialGroup()
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1))
+                            .addComponent(increaseCountBtn)
+                            .addComponent(txtCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(47, 47, 47)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4))
+                        .addComponent(txtFine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateBtn)
+                    .addComponent(insertBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(69, 69, 69))
@@ -165,7 +225,7 @@ public class updateAttendence extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        attendenceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -181,7 +241,15 @@ public class updateAttendence extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        attendenceTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                attendenceTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(attendenceTable);
+
+        messageText.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        messageText.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -199,8 +267,9 @@ public class updateAttendence extends javax.swing.JFrame {
                                 .addComponent(formPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(50, 50, 50)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 786, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(46, Short.MAX_VALUE))
+                            .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(messageText, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         backgroundPanelLayout.setVerticalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,9 +280,11 @@ public class updateAttendence extends javax.swing.JFrame {
                 .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(109, 109, 109)
                 .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                     .addComponent(formPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(messageText, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -229,28 +300,160 @@ public class updateAttendence extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void update_table(String month){
+            try {     
+            pst = con.prepareStatement("SELECT * FROM attendence WHERE month=?");
+            pst.setString(1, month);
+            rs = pst.executeQuery();
+            rs.next();
+            DefaultTableModel dtm = (DefaultTableModel) attendenceTable.getModel();
+            dtm.setRowCount(0);
+            
 
+            while(rs.next()){
+                dtm.addRow(new Object[] { rs.getString("admnno"), rs.getString("month"), rs.getString("count"), rs.getString("fine")});
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    private void getCombo() {
+        try {     
+            pst = con.prepareStatement("SELECT admnno FROM inmates");
+            rs = pst.executeQuery();
+  
+            while (rs.next())
+            {               
+               admnCombo.addItem(rs.getString("admnno"));
+            }//end while
+
+
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
         new Home().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_homeBtnActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void monthComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        String month = monthCombo.getSelectedItem().toString();
+        
+        update_table(month);
+    }//GEN-LAST:event_monthComboActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        String admnNo = admnCombo.getSelectedItem().toString();
+        String count = txtCount.getText();
+        String fine = txtFine.getText();
+        String month = monthCombo.getSelectedItem().toString();
+        
+        try {
+            pst = con.prepareStatement("update attendence set count=?, fine=? where admnno=? and month=?");
+            pst.setString(1, count);
+            pst.setString(2, fine);
+            pst.setString(3, admnNo);
+            pst.setString(4, month);
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+            pst.executeUpdate();
+        
+            messageText.setForeground(Color.decode("#130a40"));
+            messageText.setText("Successfully updated count and fine");
+        
+            
+            // clear the text boxes
+            //txtAdmnno.requestFocus();
+            
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+            // DefaultTableModel dtm = (DefaultTableModel) inmateTable.getModel();            
+            // dtm.addRow(new Object[] {admnNo, name, branch, semester});
+            update_table(month);
+        } 
+        catch(SQLIntegrityConstraintViolationException ex){
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Cannot work");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Could not update value");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void txtCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCountActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_txtCountActionPerformed
+
+    private void insertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBtnActionPerformed
+        // TODO add your handling code here:
+        String admnNo = admnCombo.getSelectedItem().toString();
+        String count = txtCount.getText();
+        String fine = txtFine.getText();
+        String month = monthCombo.getSelectedItem().toString();
+        
+                try {
+            pst = con.prepareStatement("insert into attendence values((?),(?),(?),(?))");
+            pst.setString(1, admnNo);
+            pst.setString(2, month);
+            pst.setString(3, count);
+            pst.setString(4, fine);
+
+            pst.executeUpdate();
+        
+            messageText.setForeground(Color.decode("#130a40"));
+            messageText.setText("Successfully added entry");
+        
+            
+
+            
+
+            // DefaultTableModel dtm = (DefaultTableModel) inmateTable.getModel();            
+            // dtm.addRow(new Object[] {admnNo, name, branch, semester});
+            update_table(month);
+        } 
+        catch(SQLIntegrityConstraintViolationException ex){
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Data already exists in database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Could not add record to the database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_insertBtnActionPerformed
+
+    private void attendenceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendenceTableMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) attendenceTable.getModel();
+        int index = attendenceTable.getSelectedRow();
+        
+        //txtAdmnno.setText(dtm.getValueAt(index, 0).toString());
+        admnCombo.setSelectedItem(dtm.getValueAt(index, 0).toString());
+        monthCombo.setSelectedItem(dtm.getValueAt(index, 1).toString());
+        txtCount.setText(dtm.getValueAt(index, 2).toString());
+        txtFine.setText(dtm.getValueAt(index, 3).toString());
+    }//GEN-LAST:event_attendenceTableMouseClicked
+
+    private void increaseCountBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseCountBtnActionPerformed
+        // TODO add your handling code here:
+        int count  = Integer.parseInt(txtCount.getText());
+        count++;
+        txtCount.setText(String.valueOf(count));
+    }//GEN-LAST:event_increaseCountBtnActionPerformed
+
+    private void txtFineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFineActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFineActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,13 +491,13 @@ public class updateAttendence extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> admnCombo;
+    private javax.swing.JTable attendenceTable;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JPanel formPanel;
     private javax.swing.JButton homeBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton increaseCountBtn;
+    private javax.swing.JButton insertBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -302,8 +505,10 @@ public class updateAttendence extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel messageText;
+    private javax.swing.JComboBox<String> monthCombo;
+    private javax.swing.JTextField txtCount;
+    private javax.swing.JTextField txtFine;
+    private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }

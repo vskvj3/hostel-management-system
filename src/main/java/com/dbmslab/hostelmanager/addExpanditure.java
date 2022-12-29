@@ -4,6 +4,18 @@
  */
 package com.dbmslab.hostelmanager;
 
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author cy34
@@ -13,8 +25,25 @@ public class addExpanditure extends javax.swing.JFrame {
     /**
      * Creates new form addExpanditure
      */
+    
+    Connection con = null;
+    Statement st = null;
+    PreparedStatement pst = null;  
+    ResultSet rs = null;
+    
     public addExpanditure() {
         initComponents();
+        try {
+            final String URL = "jdbc:mysql://localhost:3306/hostelDB";
+            final String username = "hosteluser";
+            final String password = "";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(URL, username, password);
+        } catch (ClassNotFoundException | SQLException ex) {
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        update_table();
     }
 
     /**
@@ -32,26 +61,28 @@ public class addExpanditure extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        monthCombo = new javax.swing.JComboBox<>();
+        txtProvision = new javax.swing.JTextField();
+        txtLessRevenue = new javax.swing.JTextField();
+        addBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtMilk = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        txtWages = new javax.swing.JTextField();
+        txtNewsPaper = new javax.swing.JTextField();
+        txtMiscExpense = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        txtLessFine = new javax.swing.JTextField();
+        calcExpenseBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        expenseTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
+        messageText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1400, 900));
@@ -79,19 +110,21 @@ public class addExpanditure extends javax.swing.JFrame {
         jLabel2.setText("Provision: ");
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Less Revenue: ");
+        jLabel3.setText("Less Extra: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        monthCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        monthCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                monthComboActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addBtn.setBackground(new java.awt.Color(0, 51, 51));
+        addBtn.setForeground(new java.awt.Color(255, 255, 255));
+        addBtn.setText("Add");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addBtnActionPerformed(evt);
             }
         });
 
@@ -115,25 +148,36 @@ public class addExpanditure extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Misc. Expenses: ");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        txtWages.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                txtWagesActionPerformed(evt);
             }
         });
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        txtNewsPaper.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                txtNewsPaperActionPerformed(evt);
             }
         });
 
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Less Fine: ");
 
-        jButton2.setText("Calc.");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        calcExpenseBtn.setBackground(new java.awt.Color(0, 51, 51));
+        calcExpenseBtn.setForeground(new java.awt.Color(255, 255, 255));
+        calcExpenseBtn.setText("Calc.");
+        calcExpenseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                calcExpenseBtnActionPerformed(evt);
+            }
+        });
+
+        updateBtn.setBackground(new java.awt.Color(0, 51, 51));
+        updateBtn.setForeground(new java.awt.Color(255, 255, 255));
+        updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
             }
         });
 
@@ -145,7 +189,9 @@ public class addExpanditure extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(addBtn)
+                        .addGap(52, 52, 52)
+                        .addComponent(updateBtn)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,17 +207,17 @@ public class addExpanditure extends javax.swing.JFrame {
                             .addComponent(jLabel11))
                         .addGap(54, 54, 54)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(monthCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtProvision, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtLessRevenue, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMilk)
+                            .addComponent(txtWages)
+                            .addComponent(txtMiscExpense, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNewsPaper, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtLessFine, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2)
+                                .addComponent(calcExpenseBtn)
                                 .addGap(0, 2, Short.MAX_VALUE)))
                         .addGap(35, 35, 35))))
         );
@@ -185,49 +231,48 @@ public class addExpanditure extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(monthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtProvision, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMilk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtLessRevenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33)
                         .addComponent(jLabel11))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2)))
+                        .addComponent(txtLessFine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(calcExpenseBtn)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtWages, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNewsPaper, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMiscExpense, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(109, 109, 109)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addBtn)
+                    .addComponent(updateBtn))
                 .addGap(17, 17, 17))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        expenseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Month", "Total", "Less Revenue", "Net Total", "Est. Fee"
@@ -241,11 +286,19 @@ public class addExpanditure extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        expenseTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                expenseTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(expenseTable);
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("ADD EXPENSE");
+
+        messageText.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        messageText.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
@@ -260,11 +313,14 @@ public class addExpanditure extends javax.swing.JFrame {
                         .addGap(550, 550, 550)
                         .addComponent(jLabel4))
                     .addGroup(backgroundPanelLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 719, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                        .addGap(40, 40, 40)
+                        .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(messageText, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(backgroundPanelLayout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 719, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         backgroundPanelLayout.setVerticalGroup(
             backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,11 +329,13 @@ public class addExpanditure extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
-                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(messageText, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -294,13 +352,82 @@ public class addExpanditure extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        private void update_table(){
+            try {     
+            pst = con.prepareStatement("SELECT * FROM expense");
+            rs = pst.executeQuery();
+            
+            DefaultTableModel dtm = (DefaultTableModel) expenseTable.getModel();
+            dtm.setRowCount(0);
+            
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+            while(rs.next()){
+                dtm.addRow(new Object[] { rs.getString("month"), rs.getString("total"), rs.getString("less_revenue"), rs.getString("net_total"), rs.getString("est_fee")});
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(addExpanditure.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        String month = monthCombo.getSelectedItem().toString();
+        String provision = txtProvision.getText();
+        String milk = txtMilk.getText();
+        String lessExtra = txtLessRevenue.getText();
+        String lessFine = txtLessFine.getText();
+        
+        String wages = txtWages.getText();
+        String newsPaper = txtNewsPaper.getText();
+        String miscExp = txtMiscExpense.getText();
+        
+        int total = Integer.parseInt(provision) + Integer.parseInt(milk);
+        int lessRevenue = Integer.parseInt(lessExtra) + Integer.parseInt(lessFine);
+        int netTotal = total - lessRevenue;
+        
+        int estFee = Integer.parseInt(wages) + Integer.parseInt(newsPaper) + Integer.parseInt(miscExp);
+        
+        
+        try {
+            pst = con.prepareStatement("insert into expense values((?),(?),(?),(?), (?))");
+            pst.setString(1,month);
+            pst.setString(2, String.valueOf(total));
+            pst.setString(3, String.valueOf(lessRevenue));
+            pst.setString(4, String.valueOf(netTotal));
+            pst.setString(5, String.valueOf(estFee));
+
+
+            pst.executeUpdate();
+        
+            messageText.setForeground(Color.decode("#130a40"));
+            messageText.setText("Successfully added entry");
+        
+            
+
+            
+
+            // DefaultTableModel dtm = (DefaultTableModel) inmateTable.getModel();            
+            // dtm.addRow(new Object[] {admnNo, name, branch, semester});
+            update_table();
+        } 
+        catch(SQLIntegrityConstraintViolationException ex){
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Data already exists in database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Could not add record to the database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        
+        
+    }//GEN-LAST:event_addBtnActionPerformed
+
+    private void monthComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_monthComboActionPerformed
 
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
@@ -308,17 +435,92 @@ public class addExpanditure extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_homeBtnActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void txtWagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtWagesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtWagesActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void txtNewsPaperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNewsPaperActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_txtNewsPaperActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void calcExpenseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcExpenseBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        String month = monthCombo.getSelectedItem().toString();
+        
+        try {     
+            pst = con.prepareStatement("SELECT SUM(fine) AS sum FROM attendence WHERE month = ?");
+            pst.setString(1, month);
+            rs = pst.executeQuery();
+            
+            txtLessFine.setText(String.valueOf(rs.getInt(1)));
+        }
+        catch (SQLException ex) {
+            
+            Logger.getLogger(addExpanditure.class.getName()).log(Level.SEVERE, "Somtheing is woeng in calc expase", ex);
+            
+        }
+    }//GEN-LAST:event_calcExpenseBtnActionPerformed
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        // TODO add your handling code here:
+              String month = monthCombo.getSelectedItem().toString();
+        String provision = txtProvision.getText();
+        String milk = txtMilk.getText();
+        String lessExtra = txtLessRevenue.getText();
+        String lessFine = txtLessFine.getText();
+        
+        String wages = txtWages.getText();
+        String newsPaper = txtNewsPaper.getText();
+        String miscExp = txtMiscExpense.getText();
+        
+        int total = Integer.parseInt(provision) + Integer.parseInt(milk);
+        int lessRevenue = Integer.parseInt(lessExtra) + Integer.parseInt(lessFine);
+        int netTotal = total - lessRevenue;
+        
+        int estFee = Integer.parseInt(wages) + Integer.parseInt(newsPaper) + Integer.parseInt(miscExp);
+  
+                try {
+            pst = con.prepareStatement("update expense set total = ?, less_revenue = ?, net_total = ?, est_fee = ? where month = ?");
+            pst.setString(5,month);
+            pst.setString(1, String.valueOf(total));
+            pst.setString(2, String.valueOf(lessRevenue));
+            pst.setString(3, String.valueOf(netTotal));
+            pst.setString(4, String.valueOf(estFee));
+
+
+            pst.executeUpdate();
+        
+            messageText.setForeground(Color.decode("#130a40"));
+            messageText.setText("Successfully updated entry");
+        
+            
+
+            
+
+            // DefaultTableModel dtm = (DefaultTableModel) inmateTable.getModel();            
+            // dtm.addRow(new Object[] {admnNo, name, branch, semester});
+            update_table();
+        } 
+        catch(SQLIntegrityConstraintViolationException ex){
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Data already exists in database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Could not update");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void expenseTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expenseTableMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) expenseTable.getModel();
+        int index = expenseTable.getSelectedRow();
+
+        monthCombo.setSelectedItem(dtm.getValueAt(index, 0).toString());
+ 
+    }//GEN-LAST:event_expenseTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -356,11 +558,11 @@ public class addExpanditure extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBtn;
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton calcExpenseBtn;
+    private javax.swing.JTable expenseTable;
     private javax.swing.JButton homeBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -374,13 +576,15 @@ public class addExpanditure extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel messageText;
+    private javax.swing.JComboBox<String> monthCombo;
+    private javax.swing.JTextField txtLessFine;
+    private javax.swing.JTextField txtLessRevenue;
+    private javax.swing.JTextField txtMilk;
+    private javax.swing.JTextField txtMiscExpense;
+    private javax.swing.JTextField txtNewsPaper;
+    private javax.swing.JTextField txtProvision;
+    private javax.swing.JTextField txtWages;
+    private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }

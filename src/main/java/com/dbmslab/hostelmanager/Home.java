@@ -55,7 +55,7 @@ public class Home extends javax.swing.JFrame {
         addInmateDetailsBtn.setBackground(new java.awt.Color(0, 51, 51));
         addInmateDetailsBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         addInmateDetailsBtn.setForeground(new java.awt.Color(255, 255, 255));
-        addInmateDetailsBtn.setText("Add Inmate Details");
+        addInmateDetailsBtn.setText("EDIT INMATE DETAILS");
         addInmateDetailsBtn.setBorder(null);
         addInmateDetailsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,7 +66,7 @@ public class Home extends javax.swing.JFrame {
         updateAttendeceBtn.setBackground(new java.awt.Color(0, 51, 51));
         updateAttendeceBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         updateAttendeceBtn.setForeground(new java.awt.Color(255, 255, 255));
-        updateAttendeceBtn.setText("Update Attendence");
+        updateAttendeceBtn.setText("UPDATE ATTENDENCE");
         updateAttendeceBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateAttendeceBtnActionPerformed(evt);
@@ -76,7 +76,7 @@ public class Home extends javax.swing.JFrame {
         addMonthExpenditureBtn.setBackground(new java.awt.Color(0, 51, 51));
         addMonthExpenditureBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         addMonthExpenditureBtn.setForeground(new java.awt.Color(255, 255, 255));
-        addMonthExpenditureBtn.setText("Add Expanse");
+        addMonthExpenditureBtn.setText("ADD EXPENSE");
         addMonthExpenditureBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addMonthExpenditureBtnActionPerformed(evt);
@@ -86,7 +86,7 @@ public class Home extends javax.swing.JFrame {
         calculateMessBillbtn.setBackground(new java.awt.Color(0, 51, 51));
         calculateMessBillbtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         calculateMessBillbtn.setForeground(new java.awt.Color(255, 255, 255));
-        calculateMessBillbtn.setText("Calculate Mess Bill");
+        calculateMessBillbtn.setText("CALCULATE MESS BILL");
         calculateMessBillbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 calculateMessBillbtnActionPerformed(evt);
