@@ -7,7 +7,7 @@ This project was made as part of KTU Database Management Systems Lab - (CSL333)
 * [Mysql](https://www.mysql.com/downloads/) 
 
 ## Installation
-1. Download the files
+1. Download the sql files and jar file from [release](https://github.com/vskvj3/hostel-management-system/releases/tag/v1.0)
 
 2. create the sql user and data base
 ```sql
