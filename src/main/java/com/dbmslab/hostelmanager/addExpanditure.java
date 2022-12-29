@@ -451,8 +451,9 @@ public class addExpanditure extends javax.swing.JFrame {
             pst = con.prepareStatement("SELECT SUM(fine) AS sum FROM attendence WHERE month = ?");
             pst.setString(1, month);
             rs = pst.executeQuery();
+            rs.next();
             
-            txtLessFine.setText(String.valueOf(rs.getInt(1)));
+            txtLessFine.setText(String.valueOf(rs.getString("sum")));
         }
         catch (SQLException ex) {
             

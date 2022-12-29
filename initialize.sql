@@ -18,7 +18,7 @@ create table inmates(
 create table attendence(
 	admnno varchar(20) primary key, 
 	month varchar(20), 
-	count int,
+	count_no int,
 	fine int
 );
 

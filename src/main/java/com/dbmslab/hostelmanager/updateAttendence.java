@@ -311,7 +311,7 @@ public class updateAttendence extends javax.swing.JFrame {
             
 
             while(rs.next()){
-                dtm.addRow(new Object[] { rs.getString("admnno"), rs.getString("month"), rs.getString("count"), rs.getString("fine")});
+                dtm.addRow(new Object[] { rs.getString("admnno"), rs.getString("month"), rs.getString("count_no"), rs.getString("fine")});
             }
         }
         catch (SQLException ex) {
@@ -357,7 +357,7 @@ public class updateAttendence extends javax.swing.JFrame {
         String month = monthCombo.getSelectedItem().toString();
         
         try {
-            pst = con.prepareStatement("update attendence set count=?, fine=? where admnno=? and month=?");
+            pst = con.prepareStatement("update attendence set count_no=?, fine=? where admnno=? and month=?");
             pst.setString(1, count);
             pst.setString(2, fine);
             pst.setString(3, admnNo);
