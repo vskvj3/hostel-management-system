@@ -26,7 +26,9 @@ public class updateAttendence extends javax.swing.JFrame {
         // create variables for database connection
     Connection con = null;
     Statement st = null;
-    PreparedStatement pst = null;  
+    PreparedStatement pst = null; 
+    PreparedStatement pst1 = null;
+    PreparedStatement pst2 = null;  
     ResultSet rs = null;
     
     /**
@@ -74,6 +76,7 @@ public class updateAttendence extends javax.swing.JFrame {
         txtCount = new javax.swing.JTextField();
         insertBtn = new javax.swing.JButton();
         admnCombo = new javax.swing.JComboBox<>();
+        insertAllBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         homeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -148,6 +151,15 @@ public class updateAttendence extends javax.swing.JFrame {
             }
         });
 
+        insertAllBtn.setBackground(new java.awt.Color(0, 51, 51));
+        insertAllBtn.setForeground(new java.awt.Color(255, 255, 255));
+        insertAllBtn.setText("Insert all inmates into month");
+        insertAllBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertAllBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout formPanelLayout = new javax.swing.GroupLayout(formPanel);
         formPanel.setLayout(formPanelLayout);
         formPanelLayout.setHorizontalGroup(
@@ -175,7 +187,8 @@ public class updateAttendence extends javax.swing.JFrame {
                             .addGroup(formPanelLayout.createSequentialGroup()
                                 .addComponent(txtCount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(increaseCountBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(increaseCountBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(insertAllBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         formPanelLayout.setVerticalGroup(
@@ -185,6 +198,8 @@ public class updateAttendence extends javax.swing.JFrame {
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(monthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(insertAllBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -230,11 +245,11 @@ public class updateAttendence extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Admn no.", "month", "count", "fine"
+                "Admn no.", "Name", "count", "fine"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -302,16 +317,16 @@ public class updateAttendence extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void update_table(String month){
             try {     
-            pst = con.prepareStatement("SELECT * FROM attendence WHERE month=?");
+            pst = con.prepareStatement("SELECT I.admnno, count_no, fine, name from attendence as A, inmates as I where month = ? and I.admnno = A.admnno");
             pst.setString(1, month);
             rs = pst.executeQuery();
-            rs.next();
+
             DefaultTableModel dtm = (DefaultTableModel) attendenceTable.getModel();
             dtm.setRowCount(0);
             
 
             while(rs.next()){
-                dtm.addRow(new Object[] { rs.getString("admnno"), rs.getString("month"), rs.getString("count_no"), rs.getString("fine")});
+                dtm.addRow(new Object[] { rs.getString("admnno"), rs.getString("name"), rs.getString("count_no"), rs.getString("fine")});
             }
         }
         catch (SQLException ex) {
@@ -455,6 +470,49 @@ public class updateAttendence extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFineActionPerformed
 
+    private void insertAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertAllBtnActionPerformed
+        // TODO add your handling code here:
+            String month = monthCombo.getSelectedItem().toString();
+        
+        try {
+            
+         
+                    
+                    
+            pst = con.prepareStatement("select admnno from inmates");
+            rs = pst.executeQuery();
+            while(rs.next()){
+                pst2 = con.prepareStatement("insert into attendence values((?),(?),(?),(?))");
+                pst2.setString(1, rs.getString("admnno"));
+                pst2.setString(2, month);
+                pst2.setString(3, "0");
+                pst2.setString(4, "0");
+
+                pst2.executeUpdate();
+            }
+            
+            
+            
+            
+            messageText.setForeground(Color.decode("#130a40"));
+            messageText.setText("Successfully inserted everyone");
+        
+            // DefaultTableModel dtm = (DefaultTableModel) inmateTable.getModel();            
+            // dtm.addRow(new Object[] {admnNo, name, branch, semester});
+            update_table(month);
+        } 
+        catch(SQLIntegrityConstraintViolationException ex){
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Data already exists in database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Could not add record to the database");
+            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_insertAllBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -497,6 +555,7 @@ public class updateAttendence extends javax.swing.JFrame {
     private javax.swing.JPanel formPanel;
     private javax.swing.JButton homeBtn;
     private javax.swing.JButton increaseCountBtn;
+    private javax.swing.JButton insertAllBtn;
     private javax.swing.JButton insertBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

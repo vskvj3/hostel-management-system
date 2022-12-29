@@ -7,6 +7,9 @@ create database hostelDB;
 -- give permissions to hosteluser
 GRANT ALL PRIVILEGES ON hostelDB . * TO 'hosteluser'@'localhost';
 
+-- database
+use hostelDB;
+
 -- create inmates table
 create table inmates(
 	admnno VARCHAR(20) PRIMARY KEY, 
