@@ -77,6 +77,7 @@ public class updateAttendence extends javax.swing.JFrame {
         insertBtn = new javax.swing.JButton();
         admnCombo = new javax.swing.JComboBox<>();
         insertAllBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         homeBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -160,17 +161,28 @@ public class updateAttendence extends javax.swing.JFrame {
             }
         });
 
+        deleteBtn.setBackground(new java.awt.Color(0, 51, 51));
+        deleteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteBtn.setText("Delete");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout formPanelLayout = new javax.swing.GroupLayout(formPanel);
         formPanel.setLayout(formPanelLayout);
         formPanelLayout.setHorizontalGroup(
             formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(formPanelLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(formPanelLayout.createSequentialGroup()
                         .addComponent(updateBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(insertBtn))
+                        .addGap(42, 42, 42)
+                        .addComponent(insertBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteBtn))
                     .addGroup(formPanelLayout.createSequentialGroup()
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5)
@@ -200,7 +212,7 @@ public class updateAttendence extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addComponent(insertAllBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(admnCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -214,10 +226,11 @@ public class updateAttendence extends javax.swing.JFrame {
                         .addGap(47, 47, 47)
                         .addComponent(txtFine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateBtn)
-                    .addComponent(insertBtn))
+                    .addComponent(insertBtn)
+                    .addComponent(deleteBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(69, 69, 69))
@@ -231,9 +244,6 @@ public class updateAttendence extends javax.swing.JFrame {
         homeBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         homeBtn.setForeground(new java.awt.Color(255, 255, 255));
         homeBtn.setText("HOME");
-        homeBtn.setMaximumSize(new java.awt.Dimension(85, 28));
-        homeBtn.setMinimumSize(new java.awt.Dimension(85, 28));
-        homeBtn.setPreferredSize(new java.awt.Dimension(85, 28));
         homeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 homeBtnActionPerformed(evt);
@@ -306,7 +316,7 @@ public class updateAttendence extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1369, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,6 +324,7 @@ public class updateAttendence extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private void update_table(String month){
             try {     
@@ -513,6 +524,30 @@ public class updateAttendence extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_insertAllBtnActionPerformed
 
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        // TODO add your handling code here:
+        String admnNo = admnCombo.getSelectedItem().toString();
+        String month = monthCombo.getSelectedItem().toString();
+        try {
+            pst = con.prepareStatement("DELETE FROM attendence WHERE admnno=? AND month=?;");
+
+            pst.setString(1, admnNo);
+            pst.setString(2, month);
+            pst.executeUpdate();
+        
+            messageText.setForeground(Color.decode("#130a40"));
+            messageText.setText("Successfully deleted entry");
+        
+           
+            update_table(month);
+        } 
+        catch (SQLException ex) {
+            messageText.setForeground(Color.decode("#1a0105"));
+            messageText.setText("Cannot delete entry");
+            Logger.getLogger(updateAttendence.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -552,6 +587,7 @@ public class updateAttendence extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> admnCombo;
     private javax.swing.JTable attendenceTable;
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton deleteBtn;
     private javax.swing.JPanel formPanel;
     private javax.swing.JButton homeBtn;
     private javax.swing.JButton increaseCountBtn;

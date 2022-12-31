@@ -75,6 +75,8 @@ public class addInmate extends javax.swing.JFrame {
         catch (SQLException ex) {
             Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -100,8 +102,6 @@ public class addInmate extends javax.swing.JFrame {
         messageText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1400, 900));
-        setMinimumSize(new java.awt.Dimension(1400, 900));
         setPreferredSize(new java.awt.Dimension(1400, 900));
         setSize(new java.awt.Dimension(1400, 900));
 
@@ -334,6 +334,7 @@ public class addInmate extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed

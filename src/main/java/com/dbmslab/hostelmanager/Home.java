@@ -36,8 +36,7 @@ public class Home extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hostel Manager");
-        setMaximumSize(new java.awt.Dimension(1400, 900));
-        setMinimumSize(new java.awt.Dimension(1400, 900));
+        setMinimumSize(new java.awt.Dimension(10, 0));
         setName("homeFrame"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1400, 900));
 
@@ -153,6 +152,7 @@ public class Home extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addInmateDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addInmateDetailsBtnActionPerformed

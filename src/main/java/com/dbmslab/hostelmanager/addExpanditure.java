@@ -85,7 +85,6 @@ public class addExpanditure extends javax.swing.JFrame {
         messageText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1400, 900));
 
         backgroundPanel.setBackground(new java.awt.Color(0, 153, 153));
         backgroundPanel.setForeground(new java.awt.Color(255, 255, 255));
@@ -350,6 +349,7 @@ public class addExpanditure extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
         private void update_table(){

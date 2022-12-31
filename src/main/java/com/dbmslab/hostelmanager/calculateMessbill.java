@@ -34,7 +34,7 @@ public class calculateMessbill extends javax.swing.JFrame {
     
     public calculateMessbill() {
         initComponents();
-        
+          
         // initialize mysql connection
         try {
             final String URL = "jdbc:mysql://localhost:3306/hostelDB";
@@ -88,7 +88,8 @@ public class calculateMessbill extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("ADD OTHER EXPENSE");
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("CALCULATE MESS BILL");
 
         homeBtn.setBackground(new java.awt.Color(0, 51, 51));
         homeBtn.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
@@ -238,7 +239,7 @@ public class calculateMessbill extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -264,15 +265,6 @@ public class calculateMessbill extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(500, 500, 500)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -282,9 +274,17 @@ public class calculateMessbill extends javax.swing.JFrame {
                         .addComponent(printBillBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 893, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(54, 54, 54))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(homeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(424, 424, 424))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,7 +312,7 @@ public class calculateMessbill extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,8 +320,13 @@ public class calculateMessbill extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private void print_bill() {
+        
+    }
     private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
         // TODO add your handling code here:
         new Home().setVisible(true);
@@ -381,7 +386,7 @@ public class calculateMessbill extends javax.swing.JFrame {
                     int Pcount = Integer.parseInt(rs.getString("A.count_no"));
                     int Pfine = Integer.parseInt(rs.getString("A.fine"));
                     double Pamount = Math.ceil((float) Pcount * ratePerDay);
-                    double Ptotal = Pamount + Pfine + estFeePerPerson;
+                    double Ptotal = Math.ceil(Pamount + Pfine + estFeePerPerson);
                     dtm.addRow(new Object[] { rs.getString("I.name"), rs.getString("I.semester"), Pcount, Pamount, Pfine, estFeePerPerson, Ptotal});
                 }
             }
@@ -398,10 +403,18 @@ public class calculateMessbill extends javax.swing.JFrame {
             Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
+         
     }//GEN-LAST:event_calculateBtnActionPerformed
 
     private void printBillBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBillBtnActionPerformed
         // TODO add your handling code here:
+        try {
+            if (! expenseTable.print()) {
+                messageText.setText("User cancelled printing");
+            } 
+        } catch (java.awt.print.PrinterException e) {
+            messageText.setText("Cannot print"); 
+        } 
     }//GEN-LAST:event_printBillBtnActionPerformed
 
     /**
