@@ -20,9 +20,20 @@ source /path/to/dump.sql
 4. run the jar file
 ```bash
 java -jar /path/to/jarfile.jar
+
 ```
+
+## Screenshots
+![Main Screen](screenshots/Main_Screen.png "Main Screen")
+![Update Inmate Details](screenshots/Update_Inmate_Details.png "Update Inmate Details")
+![Attendence](screenshots/attendence.png "Attendence")
+![Add Expense](screenshots/add_expense.png "Add Expense")
+![Calculate](screenshots/print_messbill.png "Calculate Mess Bill")
+
 ## Tools used :
 * [MYSQL Community Server](https://www.mysql.com/)  
 * [Apache Netbeans 16](https://netbeans.apache.org/)  
 * [JDK 19](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html)  
+* [Maven](https://maven.apache.org/) 
 * [Mysql-Java Connectivity Driver](https://dev.mysql.com/downloads/connector/j/)  
+
