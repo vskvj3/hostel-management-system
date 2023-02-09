@@ -366,7 +366,7 @@ public class addExpanditure extends javax.swing.JFrame {
             }
         }
         catch (SQLException ex) {
-            Logger.getLogger(addExpanditure.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addExpanditure.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -413,12 +413,12 @@ public class addExpanditure extends javax.swing.JFrame {
         catch(SQLIntegrityConstraintViolationException ex){
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Data already exists in database");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Could not add record to the database");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
         
@@ -457,7 +457,7 @@ public class addExpanditure extends javax.swing.JFrame {
         }
         catch (SQLException ex) {
             
-            Logger.getLogger(addExpanditure.class.getName()).log(Level.SEVERE, "Somtheing is woeng in calc expase", ex);
+            //Logger.getLogger(addExpanditure.class.getName()).log(Level.SEVERE, "Somtheing is woeng in calc expase", ex);
             
         }
     }//GEN-LAST:event_calcExpenseBtnActionPerformed
@@ -505,12 +505,12 @@ public class addExpanditure extends javax.swing.JFrame {
         catch(SQLIntegrityConstraintViolationException ex){
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Data already exists in database");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Could not update");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }//GEN-LAST:event_updateBtnActionPerformed
 

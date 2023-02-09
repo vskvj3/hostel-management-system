@@ -46,7 +46,7 @@ public class addInmate extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
                         con = DriverManager.getConnection(URL, username, password);
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         // add the existing rows to the JTable
@@ -73,7 +73,7 @@ public class addInmate extends javax.swing.JFrame {
             }
         }
         catch (SQLException ex) {
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -383,12 +383,12 @@ public class addInmate extends javax.swing.JFrame {
         catch(SQLIntegrityConstraintViolationException ex){
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Data already exists in database");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Could not add record to the database");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         } 
 
         
@@ -429,12 +429,12 @@ public class addInmate extends javax.swing.JFrame {
         catch(SQLIntegrityConstraintViolationException ex){
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Data already exists in database");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Could not update record");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
     }//GEN-LAST:event_updateBtnActionPerformed
@@ -475,7 +475,7 @@ public class addInmate extends javax.swing.JFrame {
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Cannot delete user");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         

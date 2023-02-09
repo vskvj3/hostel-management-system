@@ -341,7 +341,7 @@ public class updateAttendence extends javax.swing.JFrame {
             }
         }
         catch (SQLException ex) {
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -406,12 +406,12 @@ public class updateAttendence extends javax.swing.JFrame {
         catch(SQLIntegrityConstraintViolationException ex){
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Cannot work");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Could not update value");
-            Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(addInmate.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }//GEN-LAST:event_updateBtnActionPerformed
 
@@ -544,7 +544,7 @@ public class updateAttendence extends javax.swing.JFrame {
         catch (SQLException ex) {
             messageText.setForeground(Color.decode("#1a0105"));
             messageText.setText("Cannot delete entry");
-            Logger.getLogger(updateAttendence.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(updateAttendence.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
